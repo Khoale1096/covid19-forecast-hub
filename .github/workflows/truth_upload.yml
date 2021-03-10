@@ -1,0 +1,26 @@
+name: Update JHU, NY Times, USAFacts truth data weekly
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Update truth weekly'
+
+jobs:
+  upload_zoltar:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.2]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/checkout@issue44
+      with:
+        repository: reichlab/covidData
+        token: ${{secrets.TEST_TOKEN}}
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+    - run: pip3 install -r visualization/requirements.txt
