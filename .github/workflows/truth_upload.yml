@@ -14,6 +14,10 @@ jobs:
 
     steps:
     #- uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+
+    - name: Install system dependencies
+      run: sudo apt-get install libudunits2-dev libcurl4-openssl-dev libgdal-dev
     - name: Checkout covidData
       uses: actions/checkout@v2
       with:
