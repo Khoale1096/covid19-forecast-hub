@@ -13,7 +13,10 @@ jobs:
         node-version: [10.2]
 
     steps:
-    #- uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        path: covid19-forecast-hub
+        
     - uses: r-lib/actions/setup-r@v1
 
     - name: Install system dependencies
