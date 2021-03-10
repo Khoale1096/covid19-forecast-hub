@@ -18,6 +18,7 @@ jobs:
 
     - name: Install system dependencies
       run: sudo apt-get install libudunits2-dev libcurl4-openssl-dev libgdal-dev
+      
     - name: Checkout covidData
       uses: actions/checkout@v2
       with:
@@ -25,16 +26,20 @@ jobs:
         ref: issue44
         token: ${{secrets.TEST_TOKEN}}
         path: covidData
+        
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+        
     - name: Install R dependencies
-      run: Rscript -e "install.packages(c('dplyr', 'tibble', 'tidyr', 'MMWRweek', 'lubridate', 'purrr', 'magrittr', 'xml2', 'rvest', 'here'))"
-      #run: Rscript -e "install.packages('remotes',repos = 'http://cran.us.r-project.org');library(remotes); remotes::install_deps('./covidData/')"
+      run: Rscript -e "install.packages(c('readr','tidyverse','dplyr', 'tibble', 'tidyr', 'MMWRweek', 'lubridate', 'purrr', 'magrittr', 'xml2', 'rvest', 'here'))"
+      
     - run: pip3 install pandas requests
+    
     - run: mkdir ./covidData/data-raw/JHU/
+    
     - name: Install covidData
       run: make recent_data
       working-directory: ./covidData/code/data-processing
