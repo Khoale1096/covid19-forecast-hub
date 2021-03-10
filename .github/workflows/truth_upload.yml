@@ -32,19 +32,19 @@ jobs:
       with:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+    
+    - run: pip3 install pandas requests
         
     - name: Install covidData R dependencies
-      run: Rscript -e "install.packages(c('tidyverse','xml2', 'rvest', 'here'))"
+      run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
       
     - name: Install covidHubUtils
       run: Rscript -e "install.packages('devtools');devtools::install_github('reichlab/zoltr');devtools::install_github('reichlab/covidHubUtils')"
     
-    - run: pip3 install pandas requests
-    
     - run: mkdir ./covidData/data-raw/JHU/
     
-    #- name: Install covidData
-    #  run: make recent_data
-    #  working-directory: ./covidData/code/data-processing
+    - name: Install covidData
+      run: make recent_data
+      working-directory: ./covidData/code/data-processing
     
     #- run: pip3 install -r visualization/requirements.txt
