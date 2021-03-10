@@ -14,9 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/checkout@issue44
+    - uses: actions/checkout@v2
       with:
         repository: reichlab/covidData
+        ref: issue40
         token: ${{secrets.TEST_TOKEN}}
     - name: Setup Python
       uses: actions/setup-python@v2
