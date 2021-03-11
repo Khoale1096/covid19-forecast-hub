@@ -26,8 +26,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: reichlab/covidData
-        ref: issue44
-        token: ${{secrets.TEST_TOKEN}}
+        token: ${{secrets.GH_TOKEN}}
         path: covidData
         
     - name: Setup Python
@@ -36,7 +35,9 @@ jobs:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     
-    - run: pip3 install pandas requests
+    - name: Install python dependencies 
+      run: pip3 install -r visualization/requirements.txt
+      working-directory: ./covid19-forecast-hub
         
     - name: Install covidData R dependencies
       run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
@@ -51,6 +52,22 @@ jobs:
       working-directory: ./covidData/code/data-processing
       
     - name: Generate truth csv files
-      run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/")'
-    
-    #- run: pip3 install -r visualization/requirements.txt
+      run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
+      
+    - name: Push Zoltar truth to Zoltar
+      run: python3 ./code/zoltar_scripts/upload_truth_to_zoltar.py
+      working-directory: ./covid19-forecast-hub
+      env:
+        Z_USERNAME: ${{ secrets.Z_USERNAME}}
+        Z_PASSWORD: ${{ secrets.Z_PASSWORD}}
+        
+    - name: Create truth JSON for visualization
+      run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
+      working-directory: ./covid19-forecast-hub
+      
+    - name: Push generated files to GitHub
+      run: bash ./travis/push-gh.sh
+      working-directory: ./covid19-forecast-hub
+      env:
+        GH_TOKEN: ${{secrets.GH_TOKEN}}
+      
