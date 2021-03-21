@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - run: sudo apt-get purge --auto-remove azure-cli google-cloud-sdk firefox ghc-9.0.1 ghc-8.10.4 adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot libgl1-mesa-dri hhvm google-chrome-stable dotnet-sdk-5.0 dotnet-sdk-3.1 dotnet-runtime-5.0 dotnet-runtime-3.1 podman moby-cli llvm-11-dev llvm-10-dev llvm-9-dev llvm-8-dev powershell mono-devel moby-engine mysql-server-core-8.0 mysql-client-core-8.0 snapd moby-containerd mongodb-org-server mongodb-org-mongos mongodb-org-shell
+    - run: sudo apt-get remove azure-cli google-cloud-sdk firefox ghc-9.0.1 ghc-8.10.4 adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot libgl1-mesa-dri hhvm google-chrome-stable dotnet-sdk-5.0 dotnet-sdk-3.1 dotnet-runtime-5.0 dotnet-runtime-3.1 podman moby-cli llvm-11-dev llvm-10-dev llvm-9-dev llvm-8-dev powershell mono-devel moby-engine mysql-server-core-8.0 mysql-client-core-8.0 snapd moby-containerd mongodb-org-server mongodb-org-mongos mongodb-org-shell
     - run: sudo df -h
 #     - uses: actions/checkout@v2
 #       with:
