@@ -13,10 +13,11 @@ jobs:
         node-version: [10.2]
 
     steps:
+    - run: sudo df -h
     - uses: actions/checkout@v2
       with:
         path: covid19-forecast-hub
-        
+    - run: sudo df -h
     - uses: r-lib/actions/setup-r@v1
 
     - name: Install system dependencies
