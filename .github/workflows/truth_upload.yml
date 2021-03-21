@@ -14,9 +14,7 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - run: sudo apt-get install wajig
-    - run: wajig large
-#     - run: sudo apt-get remove azure-cli
+    - run: sudo apt-get purge --auto-remove azure-cli google-cloud-sdk firefox ghc-9.0.1 ghc-8.10.4 adoptopenjdk-11-hotspot
     - run: sudo df -h
 #     - uses: actions/checkout@v2
 #       with:
