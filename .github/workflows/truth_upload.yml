@@ -41,6 +41,7 @@ jobs:
     - name: Install python dependencies 
       run: pip3 install -r visualization/requirements.txt
       working-directory: ./covid19-forecast-hub
+    - run: ls
         
 #     - name: Install covidData R dependencies
 #       run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
