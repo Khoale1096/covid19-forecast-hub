@@ -14,7 +14,9 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - run: sudo apt-get remove azure-cli
+    - run: sudo apt-get install wajig
+    - run: wajig large
+#     - run: sudo apt-get remove azure-cli
     - run: sudo df -h
 #     - uses: actions/checkout@v2
 #       with:
