@@ -14,39 +14,41 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - uses: actions/checkout@v2
-      with:
-        path: covid19-forecast-hub
-    - run: sudo df -h
-    - uses: r-lib/actions/setup-r@v1
+    - run: dpkg -l | grep ruby
+      working-directory: ./dev/root
+#     - uses: actions/checkout@v2
+#       with:
+#         path: covid19-forecast-hub
+#     - run: sudo df -h
+#     - uses: r-lib/actions/setup-r@v1
 
-    - name: Install system dependencies
-      run: sudo apt-get install libudunits2-dev libcurl4-openssl-dev libgdal-dev
+#     - name: Install system dependencies
+#       run: sudo apt-get install libudunits2-dev libcurl4-openssl-dev libgdal-dev
       
-    - name: Checkout covidData
-      uses: actions/checkout@v2
-      with:
-        repository: reichlab/covidData
-        token: ${{secrets.GH_TOKEN}}
-        path: covidData
+#     - name: Checkout covidData
+#       uses: actions/checkout@v2
+#       with:
+#         repository: reichlab/covidData
+#         token: ${{secrets.GH_TOKEN}}
+#         path: covidData
         
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+#     - name: Setup Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+#         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     
-    - name: Install python dependencies 
-      run: pip3 install -r visualization/requirements.txt
-      working-directory: ./covid19-forecast-hub
+#     - name: Install python dependencies 
+#       run: pip3 install -r visualization/requirements.txt
+#       working-directory: ./covid19-forecast-hub
         
-    - name: Install covidData R dependencies
-      run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
+#     - name: Install covidData R dependencies
+#       run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
       
-    - name: Install covidHubUtils
-      run: Rscript -e "install.packages('devtools');devtools::install_github('reichlab/zoltr');devtools::install_github('reichlab/covidHubUtils')"
+#     - name: Install covidHubUtils
+#       run: Rscript -e "install.packages('devtools');devtools::install_github('reichlab/zoltr');devtools::install_github('reichlab/covidHubUtils')"
     
-    - run: mkdir ./covidData/data-raw/JHU/
+#     - run: mkdir ./covidData/data-raw/JHU/
     
     - name: Install covidData
       run: make recent_data
