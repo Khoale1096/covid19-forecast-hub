@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - run: dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+    - run: sudo apt-get remove azure-cli
     - run: sudo df -h
 #     - uses: actions/checkout@v2
 #       with:
