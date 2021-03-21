@@ -15,7 +15,6 @@ jobs:
     steps:
     - run: sudo df -h
     - run: dpkg -l | grep ruby
-      working-directory: ./dev/root
 #     - uses: actions/checkout@v2
 #       with:
 #         path: covid19-forecast-hub
