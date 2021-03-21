@@ -14,7 +14,8 @@ jobs:
 
     steps:
     - run: sudo df -h
-    - run: dpkg -l | grep ruby
+    - run: sudo apt-get remove ruby2.7
+    - run: sudo df -h
 #     - uses: actions/checkout@v2
 #       with:
 #         path: covid19-forecast-hub
@@ -49,15 +50,15 @@ jobs:
     
 #     - run: mkdir ./covidData/data-raw/JHU/
     
-    - name: Install covidData
-      run: make recent_data
-      working-directory: ./covidData/code/data-processing
+#     - name: Install covidData
+#       run: make recent_data
+#       working-directory: ./covidData/code/data-processing
       
-    - name: Generate truth csv files
-      run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
+#     - name: Generate truth csv files
+#       run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
         
-    - name: Create truth JSON for visualization
-      run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
-      working-directory: ./covid19-forecast-hub
+#     - name: Create truth JSON for visualization
+#       run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
+#       working-directory: ./covid19-forecast-hub
     
       
