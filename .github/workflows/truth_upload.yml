@@ -64,7 +64,6 @@ jobs:
     - name: Install covidData
       run: make recent_data
       working-directory: ./covidData/code/data-processing
-    - run: sudo df -h
     - name: Generate truth csv files
       run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
         
@@ -77,4 +76,3 @@ jobs:
       working-directory: ./covid19-forecast-hub
       env:
         GH_TOKEN: ${{secrets.TEST_TOKEN}}
-    - run: sudo df -h
