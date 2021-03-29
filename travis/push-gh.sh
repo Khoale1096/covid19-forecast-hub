@@ -13,8 +13,8 @@ commit_website_files() {
 
 upload_files() {
   echo "Uploading files..."
-  git pull --rebase https://${GH_TOKEN}@github.com/reichlab/covid19-forecast-hub.git
-  git push https://${GH_TOKEN}@github.com/reichlab/covid19-forecast-hub.git HEAD:master
+  git pull --rebase https://${GH_TOKEN}@github.com/Khoale1096/covid19-forecast-hub.git
+  git push https://${GH_TOKEN}@github.com/Khoale1096/covid19-forecast-hub.git HEAD:master
   echo "pushed to github"
 }
 
