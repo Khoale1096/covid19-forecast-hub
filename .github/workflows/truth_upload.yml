@@ -73,5 +73,9 @@ jobs:
 #     - name: Create truth JSON for visualization
 #       run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
 #       working-directory: ./covid19-forecast-hub
-    
+    - name: Push generated files to GitHub
+      run: bash ./travis/push-gh.sh
+      working-directory: ./covid19-forecast-hub
+      env:
+        GH_TOKEN: ${{secrets.TEST_TOKEN}}
     - run: sudo df -h
