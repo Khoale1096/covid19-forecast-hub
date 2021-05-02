@@ -20,15 +20,15 @@ jobs:
     - name: Maximize build space
       uses: easimon/maximize-build-space@v4
       with:
-        root-reserve-mb: 512
+        root-reserve-mb: 256
         swap-size-mb: 1024
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
         
-    - uses: actions/checkout@v2
-      with:
-        path: covid19-forecast-hub
+#     - uses: actions/checkout@v2
+#       with:
+#         path: covid19-forecast-hub
           
     - uses: r-lib/actions/setup-r@v1
 
@@ -48,9 +48,9 @@ jobs:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     
-    - name: Install python dependencies 
-      run: pip3 install -r visualization/requirements.txt
-      working-directory: ./covid19-forecast-hub
+#     - name: Install python dependencies 
+#       run: pip3 install -r visualization/requirements.txt
+#       working-directory: ./covid19-forecast-hub
         
     - name: Install covidData R dependencies
       run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
@@ -67,12 +67,12 @@ jobs:
     - name: Generate truth csv files
       run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
         
-    - name: Create truth JSON for visualization
-      run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
-      working-directory: ./covid19-forecast-hub
+#     - name: Create truth JSON for visualization
+#       run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
+#       working-directory: ./covid19-forecast-hub
       
-    - name: Push generated files to GitHub
-      run: bash ./travis/push-gh.sh
-      working-directory: ./covid19-forecast-hub
-      env:
-        GH_TOKEN: ${{secrets.TEST_TOKEN}}
+#     - name: Push generated files to GitHub
+#       run: bash ./travis/push-gh.sh
+#       working-directory: ./covid19-forecast-hub
+#       env:
+#         GH_TOKEN: ${{secrets.TEST_TOKEN}}
