@@ -13,24 +13,32 @@ jobs:
         node-version: [10.2]
 
     steps:
-    - run: sudo df -h
-#     - run: sudo apt-get remove ansible moby-buildx libllvm8 libllvm9 libllvm10 libllvm11 linux-azure-headers-5.4.0-1040 linux-modules-5.4.0-1040-azure azure-cli google-cloud-sdk firefox ghc-9.0.1 ghc-8.10.4 adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot libgl1-mesa-dri hhvm google-chrome-stable dotnet-sdk-5.0 dotnet-sdk-3.1 dotnet-runtime-5.0 dotnet-runtime-3.1 podman moby-cli llvm-11-dev llvm-10-dev llvm-9-dev llvm-8-dev powershell moby-engine mysql-server-core-8.0 mysql-client-core-8.0 snapd moby-containerd mongodb-org-server mongodb-org-mongos mongodb-org-shell
-#     - run: sudo apt-get remove ghc-** azure-cli firefox google-cloud-sdk google-chrome-stable hhvm dotnet-sdk-** dotnet-runtime-** moby-** adoptopenjdk-** mongodb-org-** mysql-**
-#     - run: sudo apt-get autoremove
+    - name: Free disk space
+      run: |
+          df --human-readable
+          sudo apt clean
+          docker rmi $(docker image ls --all --quiet)
+          rm --recursive --force "$AGENT_TOOLSDIRECTORY"
+          
     - name: Maximize build space
       uses: easimon/maximize-build-space@v4
       with:
-        root-reserve-mb: 256
+        root-reserve-mb: 512
         swap-size-mb: 1024
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
         
-#     - uses: actions/checkout@v2
-#       with:
-#         path: covid19-forecast-hub
-          
-    - uses: r-lib/actions/setup-r@v1
+    - name: Check space available
+      run: df --human-readable
+      
+    - name: Checkout covid19-forecast-hub repo
+      uses: actions/checkout@v2
+      with:
+        path: covid19-forecast-hub
+        
+    - name: Setup GitHub Action for R language
+      uses: r-lib/actions/setup-r@v1
 
     - name: Install system dependencies
       run: sudo apt-get install libudunits2-dev libcurl4-openssl-dev libgdal-dev
@@ -48,25 +56,22 @@ jobs:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     
-#     - name: Install python dependencies 
-#       run: pip3 install -r visualization/requirements.txt
-#       working-directory: ./covid19-forecast-hub
-        
-    - name: Install covidData R dependencies
-      run: Rscript -e "install.packages(c('tidyverse', 'rvest', 'here'))"
+    - name: Install python dependencies 
+      run: pip3 install -r visualization/requirements.txt
+      working-directory: ./covid19-forecast-hub
       
-    - name: Install covidHubUtils
-      run: Rscript -e "install.packages('devtools');devtools::install_github('reichlab/zoltr');devtools::install_github('reichlab/covidHubUtils')"
-    
-    - run: sudo df -h
+    - name: Install R dependencies (for covidData + covidHubUtils)
+      run: Rscript -e "install.packages('devtools');devtools::install_github('reichlab/zoltr');devtools::install_github('reichlab/covidHubUtils');install.packages(c('tidyverse', 'rvest', 'here'))"
+
     - run: mkdir ./covidData/data-raw/JHU/
     
     - name: Install covidData
       run: make recent_data
       working-directory: ./covidData/code/data-processing
-    - name: Generate truth csv files
+      
+    - name: Generate truth csv files (NYTimes, USAFacts, JHU, Hospitalization, Zoltar)
       run: Rscript -e 'library(covidData);library(covidHubUtils);covidHubUtils::preprocess_nytimes("./covid19-forecast-hub/data-truth/nytimes/");covidHubUtils::preprocess_usafacts("./covid19-forecast-hub/data-truth/usafacts/");covidHubUtils::preprocess_jhu("./covid19-forecast-hub/data-truth/");covidHubUtils::preprocess_hospitalization("./covid19-forecast-hub/data-truth/");covidHubUtils::save_truth_for_zoltar("./covid19-forecast-hub/data-truth/")'
-        
+
 #     - name: Create truth JSON for visualization
 #       run: python3 ./data-truth/get_visualization_truth_json_from_csv.py
 #       working-directory: ./covid19-forecast-hub
